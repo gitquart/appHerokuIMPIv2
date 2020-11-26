@@ -6,7 +6,7 @@ import os
 
 timeOut=1000
 cloud_config= {
-        'secure_connect_bundle': '/app/impiv2/secure-connect-dbquart.zip'
+        'secure_connect_bundle': '/app/appimpiv2/secure-connect-dbquart.zip'
     }
 lsRes=[]    
 
