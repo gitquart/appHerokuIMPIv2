@@ -1,0 +1,1 @@
+worker: python3 /app/appimpiv2/main.py
