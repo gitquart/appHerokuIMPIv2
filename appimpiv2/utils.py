@@ -139,6 +139,18 @@ def processCase(json_doc,gaceta,browser,row,numDetalles):
             json_doc['summary']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[10]/td[2]')[0].text.strip()
             json_doc['errorSolved']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[11]/td[2]')[0].text.strip()
             json_doc['dateOnCirculation']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[12]/td[2]')[0].text.strip()
+        if numDetalles==13:
+            json_doc['internatFolderNum']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[3]/td[2]')[0].text.strip()
+            json_doc['internatDateFeature']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[4]/td[2]')[0].text.strip()
+            json_doc['internatPubNum']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[5]/td[2]')[0].text.strip()
+            json_doc['internatPubDate']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[6]/td[2]')[0].text.strip()
+            json_doc['requester']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[7]/td[2]')[0].text.strip()
+            json_doc['inventor']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[8]/td[2]')[0].text.strip()
+            json_doc['agent']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[9]/td[2]')[0].text.strip()
+            json_doc['cip']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[10]/td[2]')[0].text.strip()
+            json_doc['title']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[11]/td[2]')[0].text.strip()
+            json_doc['summary']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[12]/td[2]')[0].text.strip()
+            json_doc['dateOnCirculation']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[13]/td[2]')[0].text.strip()
         if numDetalles==14:
             json_doc['internatFolderNum']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[3]/td[2]')[0].text.strip()
             json_doc['internatDateFeature']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[4]/td[2]')[0].text.strip()
