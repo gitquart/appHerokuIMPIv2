@@ -98,6 +98,11 @@ def processCase(json_doc,gaceta,browser,row,numDetalles):
         json_doc['inventor']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[10]/td[2]')[0].text.strip()
         json_doc['main']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[11]/td[2]')[0].text.strip()
         json_doc['agent']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[12]/td[2]')[0].text.strip()
+        if numDetalles==16:
+            json_doc['cip']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[13]/td[2]')[0].text.strip()
+            json_doc['title']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[14]/td[2]')[0].text.strip()
+            json_doc['summary']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[15]/td[2]')[0].text.strip()
+            json_doc['dateOnCirculation']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[16]/td[2]')[0].text.strip()
         if numDetalles==17:
             json_doc['cip']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[13]/td[2]')[0].text.strip()
             json_doc['cpc']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[14]/td[2]')[0].text.strip()
