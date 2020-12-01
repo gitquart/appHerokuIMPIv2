@@ -70,7 +70,8 @@ lsWebField=[
             'Fecha del Oficio',
             'Enlace electrónico',
             'Nuevo Titular',
-            'Set'
+            'Set',
+            'Número de concesión'
         
         ]
 
@@ -213,7 +214,10 @@ def checkField(row,numDetalles,browser,json_doc,folder):
                 continue
             if lblField=='Set':
                 json_doc['cset']=valField
-                continue
+                continue 
+            if lblField=='Número de concesión':
+                json_doc['noConcesion']=valField
+                continue 
         else:    
             print('-----------------------------------------------')
             print('NOT Found label: ',lblField, 'with :',folder)
