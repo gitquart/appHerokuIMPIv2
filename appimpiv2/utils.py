@@ -69,7 +69,8 @@ lsWebField=[
             'Descripción general del asunto',
             'Fecha del Oficio',
             'Enlace electrónico',
-            'Nuevo Titular'
+            'Nuevo Titular',
+            'Set'
         
         ]
 
@@ -209,6 +210,9 @@ def checkField(row,numDetalles,browser,json_doc,folder):
                 continue
             if lblField=='Fecha del Oficio':
                 json_doc['oficioDate']=valField
+                continue
+            if lblField=='Set':
+                json_doc['cset']=valField
                 continue
         else:    
             print('-----------------------------------------------')
