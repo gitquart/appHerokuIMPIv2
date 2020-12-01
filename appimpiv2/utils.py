@@ -68,7 +68,8 @@ lsWebField=[
             'URL publicación',
             'Descripción general del asunto',
             'Fecha del Oficio',
-            'Enlace electrónico'
+            'Enlace electrónico',
+            'Nuevo Titular'
         
         ]
 
@@ -143,7 +144,7 @@ def checkField(row,numDetalles,browser,json_doc,folder):
             if lblField=='Inventor(es)':
                 json_doc['inventor']=valField
                 continue
-            if lblField=='Titular':
+            if lblField=='Titular' or lblField=='Nuevo Titular':
                 json_doc['main']=valField
                 continue
             if lblField=='Agente':
