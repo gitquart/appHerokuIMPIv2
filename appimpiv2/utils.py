@@ -66,7 +66,8 @@ lsWebField=[
             'Locarno',
             'Licenciatario',
             'URL publicación',
-            'Descripción general del asunto'
+            'Descripción general del asunto',
+            'Fecha del Oficio'
         
         ]
 
