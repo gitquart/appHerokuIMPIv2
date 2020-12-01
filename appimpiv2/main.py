@@ -37,7 +37,7 @@ if resultSet:
         if res>0:
             print('Reading folder: ',folder)
             for i in range(0,res):
-                tool.processRows(browser,i) 
+                tool.processRows(browser,i,folder) 
             print('--------------------------------')    
             print('Done with folder:',folder)  
             print('--------------------------------')

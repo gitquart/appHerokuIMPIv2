@@ -33,13 +33,50 @@ lsCasos=[
 
 ]
 
+lsWebField=[
+            'Oficina, No de Patente y Tipo de documento',
+            'Tipo de documento',
+            'Fecha de concesión',
+            'Número de solicitud',
+            'Expediente',
+            'Fecha de presentación',
+            'Número de solicitud internacional',
+            'Fecha de presentación internacional',
+            'Número de publicación internacional',
+            'Fecha de publicación internacional',
+            'Inventor(es)',
+            'Titular',
+            'Agente',
+            'Clasificación CIP',
+            'Título',
+            'Resumen',
+            'Fecha de Puesta en Circulación',
+            'Solicitante(s)',
+            'Clasificación CPC',
+            'Prioridad (es)',
+            'Denominación',
+            'Clase',
+            'URL',
+            'Número del Oficio',
+            'Registro de Marca',
+            'Productos y Servicios',
+            'Datos del Titular',
+            'Resolución',
+            'Renovada Hasta',
+            'Locarno',
+            'Licenciatario',
+            'URL publicación',
+            'Descripción general del asunto'
+        
+        ]
+
 def appendInfoToFile(path,filename,strcontent):
     txtFile=open(path+filename,'a+')
     txtFile.write(strcontent)
     txtFile.close()
 
 
-def processRows(browser,row):
+def processRows(browser,row,folder):
 
     gaceta=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':j_idt68"]/thead/tr/td[2]')[0].text
     sample=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':j_idt68"]/thead/tr/td[3]')[0].text
@@ -49,7 +86,7 @@ def processRows(browser,row):
     sample=str(sample).split(':')[1].strip()
     section=str(section).split(':')[1].strip()
     
-    json_doc=devuelveJSON('/app/appimpiv2/json_file.json')
+    json_doc=devuelveJSON('json_file.json')
     json_doc['id']=str(uuid.uuid4())
     json_doc['gaceta']=gaceta
     json_doc['sample']=sample
@@ -60,162 +97,143 @@ def processRows(browser,row):
     numTablaDetalles=len(browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr'))
     #Start reading details
     if gaceta in lsCasos:
-        processCase(json_doc,gaceta,browser,row,numTablaDetalles)
+        processCase(json_doc,gaceta,browser,row,numTablaDetalles,folder)
     else:
         print('--------------------------------------------')  
         print('Caso: ',gaceta,' no existe')
         os.sys.exit(0)  
 
-    
 
-def processCase(json_doc,gaceta,browser,row,numDetalles):
+
+def checkField(row,numDetalles,browser,json_doc,folder):
+    for i in range(1,numDetalles+1):
+        lblField=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr['+str(i)+']/td[1]')[0].text.strip()
+        valField=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr['+str(i)+']/td[2]')[0].text.strip()
+        
+        if lblField in lsWebField:
+            if lblField=='Oficina, No de Patente y Tipo de documento':
+                json_doc['officePatentTypeDoc']=valField
+                continue
+            if lblField=='Tipo de documento':
+                json_doc['typeDoc']=valField
+                continue
+            if lblField=='Fecha de concesión':
+                json_doc['dateConcesion']=valField
+                continue
+            if lblField=='Número de solicitud' or lblField=='Expediente':
+                json_doc['folder']=valField
+                continue
+            if lblField=='Fecha de presentación':
+                json_doc['featureDate']=valField
+                continue
+            if lblField=='Número de solicitud internacional':
+                json_doc['internatFolderNum']=valField
+                continue
+            if lblField=='Fecha de presentación internacional':
+                json_doc['internatDateFeature']=valField
+                continue      
+            if lblField=='Número de publicación internacional':
+                json_doc['internatPubNum']=valField
+                continue
+            if lblField=='Fecha de publicación internacional':
+                json_doc['internatPubDate']=valField
+                continue
+            if lblField=='Inventor(es)':
+                json_doc['inventor']=valField
+                continue
+            if lblField=='Titular':
+                json_doc['main']=valField
+                continue
+            if lblField=='Agente':
+                json_doc['agent']=valField
+                continue
+            if lblField=='Clasificación CIP':
+                json_doc['cip']=valField
+                continue
+            if lblField=='Título':
+                json_doc['title']=valField
+                continue
+            if lblField=='Resumen':
+                json_doc['summary']=valField
+                continue
+            if lblField=='Fecha de Puesta en Circulación':
+                json_doc['dateOnCirculation']=valField
+                continue
+            if lblField=='Solicitante(s)':
+                json_doc['requester']=valField
+                continue
+            if lblField=='Clasificación CPC':
+                json_doc['cpc']=valField
+                continue
+            if lblField=='Prioridad (es)':
+                json_doc['priority']=valField
+                continue  
+            if lblField=='Denominación':
+                json_doc['denomination']=valField
+                continue
+            if lblField=='Clase':
+                json_doc['class']=valField
+                continue
+            if lblField=='URL' or lblField=='URL publicación':
+                json_doc['url']=valField 
+                continue      
+            if lblField=='Número del Oficio':  
+                json_doc['oficioNum']=valField
+                continue
+            if lblField=='Registro de Marca':
+                json_doc['branchreg']=valField 
+                continue 
+            if lblField=='Productos y Servicios':
+                json_doc['prodserv']=valField
+                continue
+            if lblField=='Datos del Titular':
+                json_doc['mainData']=valField
+                continue  
+            if lblField=='Resolución':
+                json_doc['resolution']=valField
+                continue
+            if lblField=='Renovada Hasta':
+                json_doc['renewedUntil']=valField
+                continue   
+            if lblField=='Locarno':   
+                json_doc['locarno']=valField
+                continue
+            if lblField=='Licenciatario':
+                json_doc['licenciatario']=valField
+                continue   
+            if lblField=='Descripción general del asunto':
+                json_doc['description']=valField
+                continue
+        else:    
+            print('-----------------------------------------------')
+            print('NOT Found label: ',lblField, 'with :',folder)
+            print('------The program has ended-------------------------')
+            os.sys.exit(0)
+
+
+
+
+def processCase(json_doc,gaceta,browser,row,numDetalles,folder):
     if lsCasos[0]==gaceta:
-        if numDetalles==6:
-            json_doc['folder']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[1]/td[2]')[0].text.strip()
-            json_doc['oficioDate']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[2]/td[2]')[0].text.strip()
-            json_doc['oficioNum']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[3]/td[2]')[0].text.strip()
-            json_doc['description']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[4]/td[2]')[0].text.strip()
-            json_doc['url']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[5]/td[2]')[0].text.strip()
-            json_doc['dateOnCirculation']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[6]/td[2]')[0].text.strip()
-        if numDetalles==7:
-            json_doc['folder']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[1]/td[2]')[0].text.strip()
-            json_doc['noConcesion']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[2]/td[2]')[0].text.strip()  
-            json_doc['oficioDate']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[3]/td[2]')[0].text.strip()
-            json_doc['oficioNum']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[4]/td[2]')[0].text.strip()
-            json_doc['description']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[5]/td[2]')[0].text.strip()
-            json_doc['url']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[6]/td[2]')[0].text.strip()
-            json_doc['dateOnCirculation']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[7]/td[2]')[0].text.strip()   
+        checkField(row,numDetalles,browser,json_doc,folder)
     if lsCasos[1]==gaceta:
-        json_doc['officePatentTypeDoc']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[1]/td[2]')[0].text.strip()
-        json_doc['typeDoc']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[2]/td[2]')[0].text.strip()
-        json_doc['dateConcesion']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[3]/td[2]')[0].text.strip()
-        json_doc['folder']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[4]/td[2]')[0].text.strip()
-        json_doc['featureDate']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[5]/td[2]')[0].text.strip()
-        json_doc['internatFolderNum']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[6]/td[2]')[0].text.strip()
-        json_doc['internatDateFeature']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[7]/td[2]')[0].text.strip()
-        json_doc['internatPubNum']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[8]/td[2]')[0].text.strip()
-        json_doc['internatPubDate']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[9]/td[2]')[0].text.strip()
-        json_doc['inventor']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[10]/td[2]')[0].text.strip()
-        json_doc['main']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[11]/td[2]')[0].text.strip()
-        json_doc['agent']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[12]/td[2]')[0].text.strip()
-        if numDetalles==16:
-            json_doc['cip']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[13]/td[2]')[0].text.strip()
-            json_doc['title']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[14]/td[2]')[0].text.strip()
-            json_doc['summary']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[15]/td[2]')[0].text.strip()
-            json_doc['dateOnCirculation']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[16]/td[2]')[0].text.strip()
-        if numDetalles==17:
-            json_doc['cip']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[13]/td[2]')[0].text.strip()
-            json_doc['cpc']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[14]/td[2]')[0].text.strip()
-            json_doc['title']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[15]/td[2]')[0].text.strip()
-            json_doc['summary']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[16]/td[2]')[0].text.strip()
-            json_doc['dateOnCirculation']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[17]/td[2]')[0].text.strip()
-        if numDetalles==18:
-            json_doc['priority']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[13]/td[2]')[0].text.strip()
-            json_doc['cip']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[14]/td[2]')[0].text.strip()
-            json_doc['cpc']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[15]/td[2]')[0].text.strip()
-            json_doc['title']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[16]/td[2]')[0].text.strip()
-            json_doc['summary']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[17]/td[2]')[0].text.strip()
-            json_doc['dateOnCirculation']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[18]/td[2]')[0].text.strip()
+        checkField(row,numDetalles,browser,json_doc,folder)    
     if lsCasos[2]==gaceta:
-        json_doc['folder']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[1]/td[2]')[0].text.strip()
-        json_doc['main']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[2]/td[2]')[0].text.strip()
-        json_doc['dateOnCirculation']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[3]/td[2]')[0].text.strip()
+        checkField(row,numDetalles,browser,json_doc,folder)
     if lsCasos[3]==gaceta:
-        json_doc['folder']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[1]/td[2]')[0].text.strip()
-        json_doc['featureDate']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[2]/td[2]')[0].text.strip()
-        if numDetalles==11:
-            json_doc['requester']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[3]/td[2]')[0].text.strip()
-            json_doc['inventor']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[4]/td[2]')[0].text.strip()
-            json_doc['agent']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[5]/td[2]')[0].text.strip()
-            json_doc['cip']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[6]/td[2]')[0].text.strip()
-            json_doc['title']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[7]/td[2]')[0].text.strip()
-            json_doc['cpc']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[8]/td[2]')[0].text.strip()
-            json_doc['summary']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[9]/td[2]')[0].text.strip()
-            json_doc['errorSolved']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[10]/td[2]')[0].text.strip()
-            json_doc['dateOnCirculation']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[11]/td[2]')[0].text.strip()
-        if numDetalles==12:
-            json_doc['requester']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[3]/td[2]')[0].text.strip()
-            json_doc['inventor']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[4]/td[2]')[0].text.strip()
-            json_doc['agent']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[5]/td[2]')[0].text.strip()
-            json_doc['priority']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[6]/td[2]')[0].text.strip()
-            json_doc['cip']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[7]/td[2]')[0].text.strip()
-            json_doc['title']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[8]/td[2]')[0].text.strip()
-            json_doc['cpc']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[9]/td[2]')[0].text.strip()
-            json_doc['summary']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[10]/td[2]')[0].text.strip()
-            json_doc['errorSolved']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[11]/td[2]')[0].text.strip()
-            json_doc['dateOnCirculation']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[12]/td[2]')[0].text.strip()
-        if numDetalles==13:
-            json_doc['internatFolderNum']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[3]/td[2]')[0].text.strip()
-            json_doc['internatDateFeature']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[4]/td[2]')[0].text.strip()
-            json_doc['internatPubNum']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[5]/td[2]')[0].text.strip()
-            json_doc['internatPubDate']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[6]/td[2]')[0].text.strip()
-            json_doc['requester']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[7]/td[2]')[0].text.strip()
-            json_doc['inventor']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[8]/td[2]')[0].text.strip()
-            json_doc['agent']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[9]/td[2]')[0].text.strip()
-            json_doc['cip']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[10]/td[2]')[0].text.strip()
-            json_doc['title']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[11]/td[2]')[0].text.strip()
-            json_doc['summary']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[12]/td[2]')[0].text.strip()
-            json_doc['dateOnCirculation']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[13]/td[2]')[0].text.strip()
-        if numDetalles==14:
-            json_doc['internatFolderNum']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[3]/td[2]')[0].text.strip()
-            json_doc['internatDateFeature']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[4]/td[2]')[0].text.strip()
-            json_doc['internatPubNum']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[5]/td[2]')[0].text.strip()
-            json_doc['internatPubDate']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[6]/td[2]')[0].text.strip()
-            json_doc['requester']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[7]/td[2]')[0].text.strip()
-            json_doc['inventor']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[8]/td[2]')[0].text.strip()
-            json_doc['agent']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[9]/td[2]')[0].text.strip()
-            json_doc['priority']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[10]/td[2]')[0].text.strip()
-            json_doc['cip']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[11]/td[2]')[0].text.strip()
-            json_doc['title']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[12]/td[2]')[0].text.strip()
-            json_doc['summary']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[13]/td[2]')[0].text.strip()
-            json_doc['dateOnCirculation']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[14]/td[2]')[0].text.strip()
+        checkField(row,numDetalles,browser,json_doc,folder)
     if lsCasos[4]==gaceta:
-        json_doc['requester']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[1]/td[2]')[0].text.strip()
-        json_doc['oficioNum']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[2]/td[2]')[0].text.strip()  
-        json_doc['folder']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[3]/td[2]')[0].text.strip()
-        json_doc['agent']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[4]/td[2]')[0].text.strip()
-        json_doc['dateOnCirculation']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[5]/td[2]')[0].text.strip()
+        checkField(row,numDetalles,browser,json_doc,folder)
     if lsCasos[5]==gaceta:
-        json_doc['description']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[1]/td[2]')[0].text.strip()
-        json_doc['folder']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[2]/td[2]')[0].text.strip()  
-        json_doc['noConcesion']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[3]/td[2]')[0].text.strip()
-        json_doc['oficioDate']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[4]/td[2]')[0].text.strip()
-        json_doc['oficioNum']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[5]/td[2]')[0].text.strip()
-        json_doc['url']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[6]/td[2]')[0].text.strip()
-        json_doc['dateOnCirculation']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[7]/td[2]')[0].text.strip()
+        checkField(row,numDetalles,browser,json_doc,folder)
     if lsCasos[6]==gaceta:
-        json_doc['folder']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[1]/td[2]')[0].text.strip()
-        json_doc['featureDate']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[2]/td[2]')[0].text.strip()  
-        json_doc['denomination']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[3]/td[2]')[0].text.strip()
-        json_doc['class']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[4]/td[2]')[0].text.strip()
-        json_doc['url']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[5]/td[2]')[0].text.strip()
-        json_doc['dateOnCirculation']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[6]/td[2]')[0].text.strip()
-    if lsCasos[7]==gaceta:    
-        json_doc['branchreg']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[1]/td[2]')[0].text.strip()
-        json_doc['dateConcesion']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[2]/td[2]')[0].text.strip()  
-        json_doc['folder']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[3]/td[2]')[0].text.strip()
-        json_doc['featureDate']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[4]/td[2]')[0].text.strip()
-        json_doc['denomination']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[5]/td[2]')[0].text.strip()
-        json_doc['class']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[6]/td[2]')[0].text.strip()
-        json_doc['prodserv']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[7]/td[2]')[0].text.strip()
-        json_doc['main']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[8]/td[2]')[0].text.strip()
-        json_doc['dateOnCirculation']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[9]/td[2]')[0].text.strip()
+        checkField(row,numDetalles,browser,json_doc,folder)
+    if lsCasos[7]==gaceta:
+        checkField(row,numDetalles,browser,json_doc,folder)    
     if lsCasos[8]==gaceta:
-        json_doc['resolution']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[1]/td[2]')[0].text.strip()
-        json_doc['branchreg']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[2]/td[2]')[0].text.strip()  
-        json_doc['class']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[3]/td[2]')[0].text.strip()
-        json_doc['denomination']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[4]/td[2]')[0].text.strip()
-        json_doc['renewedUntil']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[5]/td[2]')[0].text.strip()
-        json_doc['dateOnCirculation']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[6]/td[2]')[0].text.strip()
+        checkField(row,numDetalles,browser,json_doc,folder)
     if lsCasos[9]==gaceta:
-        json_doc['folioexit']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[1]/td[2]')[0].text.strip()
-        json_doc['dates']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[2]/td[2]')[0].text.strip()  
-        json_doc['description']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[3]/td[2]')[0].text.strip()
-        json_doc['pc']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[4]/td[2]')[0].text.strip()
-        json_doc['actor']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[5]/td[2]')[0].text.strip()
-        json_doc['demanded']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[6]/td[2]')[0].text.strip()
-        json_doc['url']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[7]/td[2]')[0].text.strip()
-        json_doc['dateOnCirculation']=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr[8]/td[2]')[0].text.strip()
+        checkField(row,numDetalles,browser,json_doc,folder)
 
     #Insert to DB
     query="select id from thesis.impi_docs_master where folder='"+json_doc['folder']+"' and gaceta='"+json_doc['gaceta']+"' and sample='"+json_doc['sample']+"' and section='"+json_doc['section']+"' ALLOW FILTERING ;"
