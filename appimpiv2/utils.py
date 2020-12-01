@@ -67,7 +67,8 @@ lsWebField=[
             'Licenciatario',
             'URL publicación',
             'Descripción general del asunto',
-            'Fecha del Oficio'
+            'Fecha del Oficio',
+            'Enlace electrónico'
         
         ]
 
@@ -175,7 +176,7 @@ def checkField(row,numDetalles,browser,json_doc,folder):
             if lblField=='Clase':
                 json_doc['class']=valField
                 continue
-            if lblField=='URL' or lblField=='URL publicación':
+            if lblField=='URL' or lblField=='URL publicación' or lblField=='Enlace electrónico':
                 json_doc['url']=valField 
                 continue      
             if lblField=='Número del Oficio':  
