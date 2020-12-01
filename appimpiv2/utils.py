@@ -204,6 +204,9 @@ def checkField(row,numDetalles,browser,json_doc,folder):
             if lblField=='Descripción general del asunto':
                 json_doc['description']=valField
                 continue
+            if lblField=='Fecha del Oficio':
+                json_doc['oficioDate']=valField
+                continue
         else:    
             print('-----------------------------------------------')
             print('NOT Found label: ',lblField, 'with :',folder)
