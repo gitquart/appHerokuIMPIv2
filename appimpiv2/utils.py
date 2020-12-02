@@ -72,7 +72,7 @@ lsWebField=[
             'Nuevo Titular',
             'Set',
             'Número de concesión',
-            'divisional'
+            'Divisional'
         
         ]
 
