@@ -71,7 +71,8 @@ lsWebField=[
             'Enlace electrónico',
             'Nuevo Titular',
             'Set',
-            'Número de concesión'
+            'Número de concesión',
+            'divisional'
         
         ]
 
@@ -217,6 +218,9 @@ def checkField(row,numDetalles,browser,json_doc,folder):
                 continue 
             if lblField=='Número de concesión':
                 json_doc['noConcesion']=valField
+                continue
+            if lblField=='Divisional':
+                json_doc['divisional']=valField
                 continue 
         else:    
             print('-----------------------------------------------')
