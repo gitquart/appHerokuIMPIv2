@@ -72,7 +72,8 @@ lsWebField=[
             'Nuevo Titular',
             'Set',
             'Número de concesión',
-            'Divisional'
+            'Divisional',
+            'Divisional de'
         
         ]
 
@@ -222,6 +223,10 @@ def checkField(row,numDetalles,browser,json_doc,folder):
             if lblField=='Divisional':
                 json_doc['divisional']=valField
                 continue 
+            if lblField=='Divisional de':
+                json_doc['divisional_de']=valField
+                continue
+
         else:    
             print('-----------------------------------------------')
             print('NOT Found label: ',lblField, 'with :',folder)
