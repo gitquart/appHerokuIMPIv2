@@ -94,7 +94,7 @@ def processRows(browser,row,folder):
     section=str(section).split(':')[1].strip()
     
     json_doc=devuelveJSON('/app/appimpiv2/json_file.json')
-    json_docs['lsnewfields'].clear()
+    json_doc['lsnewfields'].clear()
     json_doc['id']=str(uuid.uuid4())
     json_doc['gaceta']=gaceta
     json_doc['sample']=sample
