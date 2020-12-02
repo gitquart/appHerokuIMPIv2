@@ -94,6 +94,7 @@ def processRows(browser,row,folder):
     section=str(section).split(':')[1].strip()
     
     json_doc=devuelveJSON('/app/appimpiv2/json_file.json')
+    json_docs['lsnewfields'].clear()
     json_doc['id']=str(uuid.uuid4())
     json_doc['gaceta']=gaceta
     json_doc['sample']=sample
@@ -227,9 +228,11 @@ def checkField(row,numDetalles,browser,json_doc,folder):
                 json_doc['divisional_de']=valField
                 continue
 
-        else:    
+        else:   
+            json_doc['lsnewfields'].add('Field:',str(lblField),'->Value:',str(valField))
             print('-----------------------------------------------')
             print('NOT Found label: ',lblField, 'with :',folder)
+            print('These NOT found label and values are stored in lsnewfields in cassandra')
             print('------The program has ended-------------------------')
             os.sys.exit(0)
 
