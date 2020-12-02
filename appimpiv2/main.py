@@ -15,40 +15,43 @@ if status==200:
     browser.get(url)
     time.sleep(10)   
 
-resultSet=bd.returnQueryResult('select folder from thesis.impi_docs where year>0 ALLOW FILTERING')
+resultSet=bd.returnQueryResult('select folder,inimpi2 from thesis.impi_docs where year>0 ALLOW FILTERING')
 if resultSet:
     for row in resultSet:
         folder=''
+        inimpi2=''
         folder=str(row[0])  
-        #Click on "Búsqueda Simple"
-        btnBusqueda=tool.devuelveElemento('//*[@id="j_idt23"]/p[4]/a',browser)
-        btnBusqueda.click()
-        time.sleep(10)
-        txtBuscar=tool.devuelveElemento('//*[@id="busquedaSimpleForm:cadenaBusquedaText"]',browser)
-        txtBuscar.send_keys(folder)
-        time.sleep(10)
-        btnBuscar=tool.devuelveElemento('//*[@id="busquedaSimpleForm:buscar"]',browser)
-        btnBuscar.click()
-        time.sleep(10)
-        txtResultados=tool.devuelveElemento('//*[@id="busquedaSimpleForm:j_idt62"]',browser)
-        chunks=txtResultados.text.split(':')
-        res=int(chunks[1])
-        print('Rows:',str(res))
-        if res>0:
-            print('Reading folder: ',folder)
-            for i in range(0,res):
-                tool.processRows(browser,i,folder) 
-            print('--------------------------------')    
-            print('Done with folder:',folder)  
-            print('--------------------------------')
-            for i in range(1,3):
-                browser.back()    
+        inimpi2=str(row[1])
+        if inimpi2!='1':
+            #Click on "Búsqueda Simple"
+            btnBusqueda=tool.devuelveElemento('//*[@id="j_idt23"]/p[4]/a',browser)
+            btnBusqueda.click()
+            time.sleep(10)
+            txtBuscar=tool.devuelveElemento('//*[@id="busquedaSimpleForm:cadenaBusquedaText"]',browser)
+            txtBuscar.send_keys(folder)
+            time.sleep(10)
+            btnBuscar=tool.devuelveElemento('//*[@id="busquedaSimpleForm:buscar"]',browser)
+            btnBuscar.click()
+            time.sleep(10)
+            txtResultados=tool.devuelveElemento('//*[@id="busquedaSimpleForm:j_idt62"]',browser)
+            chunks=txtResultados.text.split(':')
+            res=int(chunks[1])
+            print('Rows:',str(res))
+            if res>0:
+                print('Reading folder: ',folder)
+                for i in range(0,res):
+                    tool.processRows(browser,i,folder) 
+                print('--------------------------------')    
+                print('Done with folder:',folder)  
+                print('--------------------------------')
+                for i in range(1,3):
+                    browser.back()    
                        
-        else:
-            print('Zero rows in the search...bye bye')
-            os.sys.exit(0)
+            else:
+                print('Zero rows in the search...bye bye')
+                os.sys.exit(0)
 else:
-    print('Something went wrong with result set in cassandra...Zero rows')                
+    print('Something went wrong with result set in cassandra...Zero rows')                 
             
                    
 
