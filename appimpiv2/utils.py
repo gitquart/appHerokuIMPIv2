@@ -117,6 +117,7 @@ def checkField(row,numDetalles,browser,json_doc,folder):
     for i in range(1,numDetalles+1):
         lblField=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr['+str(i)+']/td[1]')[0].text.strip()
         valField=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr['+str(i)+']/td[2]')[0].text.strip()
+        valField=valField.replace("'"," ")
         
         if lblField in lsWebField:
             if lblField=='Oficina, No de Patente y Tipo de documento':
