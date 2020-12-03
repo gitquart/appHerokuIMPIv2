@@ -15,7 +15,7 @@ if status==200:
     browser.get(url)
     time.sleep(10)   
 
-resultSet=bd.returnQueryResult('select folder,inimpi2 from thesis.impi_docs where year>0 ALLOW FILTERING')
+resultSet=bd.returnQueryResult('select folder,inimpi2 from thesis.impi_docs where inimpi2<1 ALLOW FILTERING')
 if resultSet:
     for row in resultSet:
         folder=''
