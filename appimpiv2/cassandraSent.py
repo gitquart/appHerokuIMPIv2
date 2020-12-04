@@ -4,7 +4,7 @@ from cassandra.auth import PlainTextAuthProvider
 from cassandra.query import SimpleStatement
 import os
 
-timeOut=100
+timeOut=1000
 cloud_config= {
         'secure_connect_bundle': '/app/appimpiv2/secure-connect-dbquart.zip'
     }
