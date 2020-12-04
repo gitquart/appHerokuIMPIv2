@@ -11,6 +11,7 @@ import json
 import os
 import sys
 from textwrap import wrap
+import datetime
 
 
 download_dir='/app/Downloadimpi'
@@ -439,4 +440,14 @@ def devuelveElemento(xPath, browser):
         if cEle>0:
             ele=browser.find_elements_by_xpath(xPath)[0]
 
-    return ele                     
+    return ele 
+
+def getTime():
+    return datetime.datetime.now() 
+
+def getDifferenceInMinutes(startTime,endTime):
+    time_delta=endTime-startTime
+    totalSecond=time_delta.total_seconds()
+    minutes=totalSecond/60 
+
+    return minutes                         

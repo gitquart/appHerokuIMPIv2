@@ -15,6 +15,8 @@ if status==200:
     browser.get(url)
     time.sleep(10)   
 
+startTime=tool.getTime()
+endTime=0
 resultSet=bd.returnQueryResult('select folder,inimpi2 from thesis.impi_docs where inimpi2<1 ALLOW FILTERING')
 if resultSet:
     for row in resultSet:
@@ -50,6 +52,15 @@ if resultSet:
             else:
                 print('Zero rows in the search...bye bye')
                 os.sys.exit(0)
+
+            endTime=tool.getTime()
+            minutes=tool.getDifferenceInMinutes(startTime,endTime)  
+            print('Checking time...')
+            if minutes>30:
+                print('-----------------------------------------') 
+                print('Hey, 30 mins done! Turn me back on!') 
+                print('-----------------------------------------') 
+                os.sys.exit(0)    
 else:
     print('Something went wrong with result set in cassandra...Zero rows')                 
             
