@@ -95,6 +95,7 @@ def processRows(browser,row,folder,totalRows):
     section=str(section).split(':')[1].strip()
     
     json_doc=devuelveJSON('/app/appimpiv2/json_file.json')
+    json_doc['secuencia']=row+1
     json_doc['lsnewfields'].clear()
     json_doc['id']=str(uuid.uuid4())
     json_doc['gaceta']=gaceta
@@ -265,7 +266,7 @@ def processCase(json_doc,gaceta,browser,row,numDetalles,folder,totalRows):
 
     #Insert to DB
     rowSec=row+1
-    query="select id from thesis.impi_docs_master where folder='"+json_doc['folder']+"' and gaceta='"+json_doc['gaceta']+"' and sample='"+json_doc['sample']+"' and section='"+json_doc['section']+"' and secuencia="+str(rowSec)+" ALLOW FILTERING ;"
+    query="select id from thesis.impi_docs_master where folder='"+json_doc['folder']+"' and gaceta='"+json_doc['gaceta']+"' and sample='"+json_doc['sample']+"' and section='"+json_doc['section']+"' and secuencia="+str(json_doc['secuencia'])+" ALLOW FILTERING ;"
     result=bd.returnQueryResult(query)   
     if result: 
         folder=json_doc['folder']
