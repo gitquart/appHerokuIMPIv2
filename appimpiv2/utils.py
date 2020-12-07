@@ -232,8 +232,9 @@ def checkField(row,numDetalles,browser,json_doc,folder):
                 json_doc['divisional_de']=valField
                 continue
 
-        else:   
-            json_doc['lsnewfields'].append('Field:',str(lblField),'->Value:',str(valField))
+        else:  
+            lsVal= 'Field:'+str(lblField)+'->Value:'+str(valField)
+            json_doc['lsnewfields'].append(lsVal)
             print('-----------------------------------------------')
             print('NOT Found label: ',lblField, 'with :',folder)
             print('These NOT found label and values are stored in lsnewfields in cassandra')
