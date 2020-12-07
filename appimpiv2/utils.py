@@ -12,6 +12,7 @@ import os
 import sys
 from textwrap import wrap
 import datetime
+from colorama import Fore, Back, Style 
 
 
 download_dir='/app/Downloadimpi'
@@ -270,7 +271,7 @@ def processCase(json_doc,gaceta,browser,row,numDetalles,folder,totalRows):
     result=bd.returnQueryResult(query)   
     if result: 
         folder=json_doc['folder']
-        print('Folder: ',folder, 'and Gaceta: ',gaceta, ' existed')
+        print(Fore.GREEN,'Folder: ',folder, 'and Gaceta: ',gaceta, ' and Sequence: ',str(rowSec),' existed')
     else:
         lsRes=bd.insertarJSON('thesis.impi_docs_master',json_doc)      
         if lsRes[0]==True:
