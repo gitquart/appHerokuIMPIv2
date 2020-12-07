@@ -62,7 +62,8 @@ if resultSet:
                 print('-----------------------------------------') 
                 os.sys.exit(0)    
 else:
-    print('Something went wrong with result set in cassandra...Zero rows')                 
+    print('Something went wrong with result set in cassandra...Zero rows') 
+    os.sys.exit(0)                
             
                    
 
