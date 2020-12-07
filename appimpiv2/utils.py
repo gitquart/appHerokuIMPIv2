@@ -237,8 +237,6 @@ def checkField(row,numDetalles,browser,json_doc,folder):
             print('-----------------------------------------------')
             print('NOT Found label: ',lblField, 'with :',folder)
             print('These NOT found label and values are stored in lsnewfields in cassandra')
-            print('------The program has ended-------------------------')
-            os.sys.exit(0)
 
 
 
