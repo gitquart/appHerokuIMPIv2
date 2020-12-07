@@ -233,7 +233,7 @@ def checkField(row,numDetalles,browser,json_doc,folder):
                 continue
 
         else:   
-            json_doc['lsnewfields'].add('Field:',str(lblField),'->Value:',str(valField))
+            json_doc['lsnewfields'].append('Field:',str(lblField),'->Value:',str(valField))
             print('-----------------------------------------------')
             print('NOT Found label: ',lblField, 'with :',folder)
             print('These NOT found label and values are stored in lsnewfields in cassandra')
