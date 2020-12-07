@@ -84,7 +84,7 @@ def appendInfoToFile(path,filename,strcontent):
     txtFile.close()
 
 
-def processRows(browser,row,folder):
+def processRows(browser,row,folder,totalRows):
 
     gaceta=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':j_idt68"]/thead/tr/td[2]')[0].text
     sample=browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':j_idt68"]/thead/tr/td[3]')[0].text
@@ -106,7 +106,7 @@ def processRows(browser,row,folder):
     numTablaDetalles=len(browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr'))
     #Start reading details
     if gaceta in lsCasos:
-        processCase(json_doc,gaceta,browser,row,numTablaDetalles,folder)
+        processCase(json_doc,gaceta,browser,row,numTablaDetalles,folder,totalRows)
     else:
         print('--------------------------------------------')  
         print('Caso: ',gaceta,' no existe')
@@ -241,7 +241,7 @@ def checkField(row,numDetalles,browser,json_doc,folder):
 
 
 
-def processCase(json_doc,gaceta,browser,row,numDetalles,folder):
+def processCase(json_doc,gaceta,browser,row,numDetalles,folder,totalRows):
     if lsCasos[0]==gaceta:
         checkField(row,numDetalles,browser,json_doc,folder)
     if lsCasos[1]==gaceta:
@@ -264,27 +264,27 @@ def processCase(json_doc,gaceta,browser,row,numDetalles,folder):
         checkField(row,numDetalles,browser,json_doc,folder)
 
     #Insert to DB
-    query="select id from thesis.impi_docs_master where folder='"+json_doc['folder']+"' and gaceta='"+json_doc['gaceta']+"' and sample='"+json_doc['sample']+"' and section='"+json_doc['section']+"' ALLOW FILTERING ;"
+    rowSec=row+1
+    query="select id from thesis.impi_docs_master where folder='"+json_doc['folder']+"' and gaceta='"+json_doc['gaceta']+"' and sample='"+json_doc['sample']+"' and section='"+json_doc['section']+"' and secuencia="+str(rowSec)+" ALLOW FILTERING ;"
     result=bd.returnQueryResult(query)   
     if result: 
         folder=json_doc['folder']
         print('Folder: ',folder, 'and Gaceta: ',gaceta, ' existed')
-        res=bd.returnQueryResult("select id from thesis.impi_docs where folder='"+str(folder)+"'") 
+    else:
+        lsRes=bd.insertarJSON('thesis.impi_docs_master',json_doc)      
+        if lsRes[0]==True:
+            print('Record added')
+        
+    #Check if the total of Rows are done, then update inimp1=1
+    if rowSec==totalRows:
+        print('Total rows:',str(totalRows),' and current Row:',str(rowSec))
+        res=bd.returnQueryResult("select id from thesis.impi_docs where folder='"+str(folder)+"' ALLOW FILTERING") 
         if res:
             for row in res:
                 strid=str(row[0])   
                 res=bd.returnQueryResult('update thesis.impi_docs set inimpi2=1 where id='+strid)
                 print('Folder:',folder,' updated with inimpi2=1 in impi_docs (impi1)')
-    else:
-        lsRes=bd.insertarJSON('thesis.impi_docs_master',json_doc)      
-        if lsRes[0]==True:
-            print('Record added')
-            res=bd.returnQueryResult("select id from thesis.impi_docs where folder='"+str(folder)+"'") 
-            if res:
-                for row in res:
-                    strid=str(row[0])   
-                    res=bd.returnQueryResult('update thesis.impi_docs set inimpi2=1 where id='+strid)
-                    print('Folder:',folder,' updated with inimpi2=1 in impi_docs (impi1)')
+                        
                
             
 
