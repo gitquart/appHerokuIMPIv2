@@ -31,7 +31,8 @@ lsCasos=[
 'Solicitudes de Marcas, Avisos y Nombres Comerciales presentadas ante el Instituto',
 'Marcas Registradas, Avisos y Nombres Comerciales',
 'Conservación de los Derechos',
-'Notificaciones de Protección a la Propiedad Intelectual'
+'Notificaciones de Protección a la Propiedad Intelectual',
+'Solicitudes de Patente de Uso Libre e Invenciones del Dominio Público'
 
 ]
 
@@ -263,6 +264,8 @@ def processCase(json_doc,gaceta,browser,row,numDetalles,folder,totalRows):
         checkField(row,numDetalles,browser,json_doc,folder)
     if lsCasos[9]==gaceta:
         checkField(row,numDetalles,browser,json_doc,folder)
+    if lsCasos[10]==gaceta:
+        checkField(row,numDetalles,browser,json_doc,folder)    
 
     #Insert to DB
     rowSec=row+1
