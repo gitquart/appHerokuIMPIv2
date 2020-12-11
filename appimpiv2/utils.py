@@ -244,29 +244,7 @@ def checkField(row,numDetalles,browser,json_doc,folder):
 
 
 def processCase(json_doc,gaceta,browser,row,numDetalles,folder,totalRows):
-    if lsCasos[0]==gaceta:
-        checkField(row,numDetalles,browser,json_doc,folder)
-    if lsCasos[1]==gaceta:
-        checkField(row,numDetalles,browser,json_doc,folder)    
-    if lsCasos[2]==gaceta:
-        checkField(row,numDetalles,browser,json_doc,folder)
-    if lsCasos[3]==gaceta:
-        checkField(row,numDetalles,browser,json_doc,folder)
-    if lsCasos[4]==gaceta:
-        checkField(row,numDetalles,browser,json_doc,folder)
-    if lsCasos[5]==gaceta:
-        checkField(row,numDetalles,browser,json_doc,folder)
-    if lsCasos[6]==gaceta:
-        checkField(row,numDetalles,browser,json_doc,folder)
-    if lsCasos[7]==gaceta:
-        checkField(row,numDetalles,browser,json_doc,folder)    
-    if lsCasos[8]==gaceta:
-        checkField(row,numDetalles,browser,json_doc,folder)
-    if lsCasos[9]==gaceta:
-        checkField(row,numDetalles,browser,json_doc,folder)
-    if lsCasos[10]==gaceta:
-        checkField(row,numDetalles,browser,json_doc,folder)    
-
+    checkField(row,numDetalles,browser,json_doc,folder)
     #Insert to DB
     rowSec=row+1
     query="select id from thesis.impi_docs_master where folder='"+json_doc['folder']+"' and gaceta='"+json_doc['gaceta']+"' and sample='"+json_doc['sample']+"' and section='"+json_doc['section']+"' and secuencia="+str(json_doc['secuencia'])+" ALLOW FILTERING ;"
