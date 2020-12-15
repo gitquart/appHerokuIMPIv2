@@ -36,6 +36,7 @@ def returnQueryResult(querySt):
     result=''
     future = session.execute_async(querySt)
     result=future.result()
+    cluster.shutdown()
 
     return result
 
