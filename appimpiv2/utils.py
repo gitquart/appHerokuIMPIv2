@@ -17,24 +17,6 @@ from colorama import Fore, Back, Style
 
 download_dir='/app/Downloadimpi'
 
-"""
-Casos
-Nota: Si no existiera un caso en el código, que termine el programa y muestre qué caso es para agregarlo con sus campos
-"""
-lsCasos=[
-'Notificaciones, conforme al párrafo segundo del art. 183 de la Ley de la Propiedad Industrial',
-'Patentes, Registros de Modelos de Utilidad y de Diseños Industriales',
-'Licencias, Transmisiones y Cambios en Solicitudes, Patentes y Registros',
-'Solicitudes de Patente, de Registros de Modelo de Utilidad y de Diseños Industriales',
-'Requisitos de Examen de Forma y Fondo, Abandonos de Solicitudes de Patentes y Registros',
-'Gaceta de Notificaciones de la Dirección Divisional de Patentes',
-'Solicitudes de Marcas, Avisos y Nombres Comerciales presentadas ante el Instituto',
-'Marcas Registradas, Avisos y Nombres Comerciales',
-'Conservación de los Derechos',
-'Notificaciones de Protección a la Propiedad Intelectual',
-'Solicitudes de Patente de Uso Libre e Invenciones del Dominio Público'
-
-]
 
 lsWebField=[
             'Oficina, No de Patente y Tipo de documento',
@@ -108,12 +90,8 @@ def processRows(browser,row,folder,totalRows):
 
     numTablaDetalles=len(browser.find_elements_by_xpath('//*[@id="busquedaSimpleForm:tabla:'+str(row)+':subTabla_data"]/tr'))
     #Start reading details
-    if gaceta in lsCasos:
-        processCase(json_doc,gaceta,browser,row,numTablaDetalles,folder,totalRows)
-    else:
-        print('--------------------------------------------')  
-        print('Caso: ',gaceta,' no existe')
-        os.sys.exit(0)  
+    processCase(json_doc,gaceta,browser,row,numTablaDetalles,folder,totalRows)
+ 
 
 
 
