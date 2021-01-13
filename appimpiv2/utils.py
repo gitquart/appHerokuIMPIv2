@@ -245,12 +245,13 @@ def processCase(json_doc,gaceta,browser,row,numDetalles,folder,totalRows):
     #Check if the total of Rows are done, then update inimp1=1
     if rowSec==totalRows:
         print('Total rows:',str(totalRows),' and current Row:',str(rowSec))
-        res=bd.returnQueryResult("select id from thesis.impi_docs where folder='"+str(folder)+"' ALLOW FILTERING") 
-        if res:
-            for row in res:
-                strid=str(row[0])   
-                res=bd.returnQueryResult('update thesis.impi_docs set inimpi2=1 where id='+strid)
-                print('Folder:',folder,' updated with inimpi2=1 in impi_docs (impi1)')
+        if objControl.impi1:
+            res=bd.returnQueryResult("select id from thesis.impi_docs where folder='"+str(folder)+"' ALLOW FILTERING") 
+            if res:
+                for row in res:
+                    strid=str(row[0])   
+                    res=bd.returnQueryResult('update thesis.impi_docs set inimpi2=1 where id='+strid)
+                    print('Folder:',folder,' updated with inimpi2=1 in impi_docs (impi1)')
                         
                
             
