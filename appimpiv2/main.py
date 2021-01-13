@@ -30,7 +30,7 @@ if resultSet:
         lsControl=row[0]
         page=int(row[1])
         limit_it=int(row[2])
-        folder=str(lsControl[0])+"/"+str(lsControl[1])+"/"+str(lsControl[2])+"/"+str(page).zfill(6)
+        folder=str(lsControl[0])+"/"+str(lsControl[1])+"/"+str(lsControl[2])+"/"
 
 for num in range(page,limit_it): 
     query='update thesis.cjf_control set page='+str(num)+' where id_control=10'
@@ -40,7 +40,7 @@ for num in range(page,limit_it):
     btnBusqueda.click()
     time.sleep(10)
     txtBuscar=tool.devuelveElemento('//*[@id="busquedaSimpleForm:cadenaBusquedaText"]',browser)
-    txtBuscar.send_keys(folder)
+    txtBuscar.send_keys(folder+str(num).zfill(6))
     time.sleep(10)
     btnBuscar=tool.devuelveElemento('//*[@id="busquedaSimpleForm:buscar"]',browser)
     btnBuscar.click()
