@@ -33,7 +33,7 @@ if resultSet:
         folder=str(lsControl[0])+"/"+str(lsControl[1])+"/"+str(lsControl[2])+"/"+str(page).zfill(6)
 
 for num in range(page,limit_it): 
-    query='update thesis.cjf_control set page='+str(page)+' where id_control=10'
+    query='update thesis.cjf_control set page='+str(num)+' where id_control=10'
     bd.executeNonQuery(query)
     #Click on "Búsqueda Simple"
     btnBusqueda=tool.devuelveElemento('//*[@id="j_idt23"]/p[4]/a',browser)
