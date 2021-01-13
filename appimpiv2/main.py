@@ -25,6 +25,7 @@ resultSet=bd.returnQueryResult('select lscontrol,page,limit_iteration from thesi
 lsControl=[]
 page=0
 limit_it=0
+folder=''
 if resultSet:
     for row in resultSet:
         lsControl=row[0]
@@ -32,7 +33,8 @@ if resultSet:
         limit_it=int(row[2])
         folder=str(lsControl[0])+"/"+str(lsControl[1])+"/"+str(lsControl[2])+"/"
 
-for num in range(page,limit_it): 
+for num in range(page,limit_it):
+    folder=folder+str(num).zfill(6) 
     query='update thesis.cjf_control set page='+str(num)+' where id_control=10'
     bd.executeNonQuery(query)
     #Click on "Búsqueda Simple"
@@ -40,7 +42,7 @@ for num in range(page,limit_it):
     btnBusqueda.click()
     time.sleep(10)
     txtBuscar=tool.devuelveElemento('//*[@id="busquedaSimpleForm:cadenaBusquedaText"]',browser)
-    txtBuscar.send_keys(folder+str(num).zfill(6))
+    txtBuscar.send_keys(folder)
     time.sleep(10)
     btnBuscar=tool.devuelveElemento('//*[@id="busquedaSimpleForm:buscar"]',browser)
     btnBuscar.click()
