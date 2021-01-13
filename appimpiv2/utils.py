@@ -13,9 +13,12 @@ import sys
 from textwrap import wrap
 import datetime
 from colorama import Fore, Back, Style 
+from InternalControl import cInternalControl
 
 
-download_dir='/app/Downloadimpi'
+objControl=cInternalControl()
+
+download_dir=objControl.download_dir
 
 
 lsWebField=[
@@ -367,18 +370,32 @@ def readPyPDF(file):
 
 
 def returnChromeSettings():
+    browser=''
     chromedriver_autoinstaller.install()
-    options = Options()
-    profile = {"plugins.plugins_list": [{"enabled": True, "name": "Chrome PDF Viewer"}], # Disable Chrome's PDF Viewer
-               "download.default_directory": download_dir , 
+    if objControl.heroku:
+        #Chrome configuration for heroku
+        chrome_options= webdriver.ChromeOptions()
+        chrome_options.binary_location=os.environ.get("GOOGLE_CHROME_BIN")
+        chrome_options.add_argument("--headless")
+        chrome_options.add_argument("--disable-dev-shm-usage")
+        chrome_options.add_argument("--no-sandbox")
+
+        browser=webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),chrome_options=chrome_options)
+
+    else:
+        options = Options()
+        profile = {"plugins.plugins_list": [{"enabled": True, "name": "Chrome PDF Viewer"}], # Disable Chrome's PDF Viewer
+               "download.default_directory": objControl.download_dir , 
                "download.prompt_for_download": False,
                "download.directory_upgrade": True,
                "download.extensions_to_open": "applications/pdf",
                "plugins.always_open_pdf_externally": True #It will not show PDF directly in chrome
                }           
 
-    options.add_experimental_option("prefs", profile)
-    browser=webdriver.Chrome(options=options)  
+        options.add_experimental_option("prefs", profile)
+        browser=webdriver.Chrome(options=options)  
+
+    
 
     return browser   
 

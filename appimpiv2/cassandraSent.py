@@ -3,17 +3,32 @@ from cassandra.cluster import Cluster
 from cassandra.auth import PlainTextAuthProvider
 from cassandra.query import SimpleStatement
 import os
+from InternalControl import cInternalControl
 
-timeOut=1000
-cloud_config= {
-        'secure_connect_bundle': '/app/appimpiv2/secure-connect-dbquart.zip'
-    }
-lsRes=[]    
+objControl=cInternalControl()
+timeOut=objControl.timeout
+idControl=objControl.idControl
+hfolder=objControl.hfolder
+
+lsRes=[] 
+
+def getCluster():
+    #Connect to Cassandra
+    objCC=CassandraConnection()
+    cloud_config=''
+    if objControl.heroku:
+        cloud_config= {'secure_connect_bundle': objControl.rutaHeroku+'/secure-connect-dbquart.zip'}
+    else:
+        cloud_config= {'secure_connect_bundle': objControl.rutaLocal+'secure-connect-dbquart.zip'}
+
+
+    auth_provider = PlainTextAuthProvider(objCC.cc_user,objCC.cc_pwd)
+    cluster = Cluster(cloud=cloud_config, auth_provider=auth_provider) 
+
+    return cluster  
 
 def insertarJSON(table,json_doc):
-    objCC=CassandraConnection()
-    auth_provider = PlainTextAuthProvider(objCC.cc_user,objCC.cc_pwd)
-    cluster = Cluster(cloud=cloud_config, auth_provider=auth_provider)
+    cluster=getCluster()
     session = cluster.connect()
     session.default_timeout=timeOut
     jsonS=json.dumps(json_doc)           
@@ -27,10 +42,7 @@ def insertarJSON(table,json_doc):
     return lsRes
 
 def returnQueryResult(querySt):
-    #Connect to Cassandra
-    objCC=CassandraConnection()
-    auth_provider = PlainTextAuthProvider(objCC.cc_user,objCC.cc_pwd)
-    cluster = Cluster(cloud=cloud_config, auth_provider=auth_provider)
+    cluster=getCluster()
     session = cluster.connect()
     session.default_timeout=timeOut
     result=''
@@ -47,10 +59,7 @@ def cassandraBDProcess(json_doc):
      
     record_added=False
 
-    #Connect to Cassandra
-    objCC=CassandraConnection()
-    auth_provider = PlainTextAuthProvider(objCC.cc_user,objCC.cc_pwd)
-    cluster = Cluster(cloud=cloud_config, auth_provider=auth_provider)
+    cluster=getCluster()
     session = cluster.connect()
     session.default_timeout=timeOut
     row=''
@@ -84,10 +93,7 @@ def cassandraBDProcess(json_doc):
 
 def updatePage(page):
 
-    #Connect to Cassandra
-    objCC=CassandraConnection()
-    auth_provider = PlainTextAuthProvider(objCC.cc_user,objCC.cc_pwd)
-    cluster = Cluster(cloud=cloud_config, auth_provider=auth_provider)
+    cluster=getCluster()
     session = cluster.connect()
     session.default_timeout=timeOut
     page=str(page)
@@ -99,10 +105,7 @@ def updatePage(page):
 
 def getPageAndTopic():
 
-    #Connect to Cassandra
-    objCC=CassandraConnection()
-    auth_provider = PlainTextAuthProvider(objCC.cc_user,objCC.cc_pwd)
-    cluster = Cluster(cloud=cloud_config, auth_provider=auth_provider)
+    cluster=getCluster()
     session = cluster.connect()
     session.default_timeout=timeOut
     row=''
@@ -127,10 +130,7 @@ def insertPDF(json_doc):
      
     record_added=False
 
-    #Connect to Cassandra
-    objCC=CassandraConnection()
-    auth_provider = PlainTextAuthProvider(objCC.cc_user,objCC.cc_pwd)
-    cluster = Cluster(cloud=cloud_config, auth_provider=auth_provider)
+    cluster=getCluster()
     session = cluster.connect()
     session.default_timeout=timeOut
 
