@@ -7,6 +7,6 @@ class cInternalControl:
     heroku=False
     rutaHeroku='/app/'+hfolder
     rutaLocal=os.getcwd()+'\\'+hfolder+'\\'
-    download_dir='Download_impi2'
+    download_dir='Download_impiv2'
     enablePdf=False
       

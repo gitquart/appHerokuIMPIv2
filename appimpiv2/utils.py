@@ -80,8 +80,12 @@ def processRows(browser,row,folder,totalRows):
     gaceta=str(gaceta).split(':')[1].strip()
     sample=str(sample).split(':')[1].strip()
     section=str(section).split(':')[1].strip()
-    
-    json_doc=devuelveJSON('/app/appimpiv2/json_file.json')
+
+    if objControl.heroku:        
+        json_doc=devuelveJSON('/app/'+objControl.hfolder+'/json_file.json')
+    else:
+        json_doc=devuelveJSON(objControl.rutaLocal+'/json_file.json')
+
     json_doc['secuencia']=row+1
     json_doc['lsnewfields'].clear()
     json_doc['id']=str(uuid.uuid4())
