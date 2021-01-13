@@ -21,16 +21,18 @@ if status==200:
 
 startTime=tool.getTime()
 endTime=0
-resultSet=bd.returnQueryResult('select lscontrol,page from thesis.cjf_control where id_control='+str(objControl.idControl)+' ;')
+resultSet=bd.returnQueryResult('select lscontrol,page,limit_iteration from thesis.cjf_control where id_control='+str(objControl.idControl)+' ;')
 lsControl=[]
 page=0
+limit_it=0
 if resultSet:
     for row in resultSet:
         lsControl=row[0]
         page=int(row[1])
+        limit_it=int(row[2])
         folder=str(lsControl[0])+"/"+str(lsControl[1])+"/"+str(lsControl[2])+"/"+str(page).zfill(6)
 
-for num in range(page,100000): 
+for num in range(page,limit_it): 
     query='update thesis.cjf_control set page='+str(page)+' where id_control=10'
     bd.executeNonQuery(query)
     #Click on "Búsqueda Simple"
