@@ -34,6 +34,7 @@ if resultSet:
         folder=str(lsControl[0])+"/"+str(lsControl[1])+"/"+str(lsControl[2])+"/"
 
 for num in range(page,limit_it):
+    print('Starting in page:',str(num))
     folder=folder+str(num).zfill(6) 
     query='update thesis.cjf_control set page='+str(num)+' where id_control=10'
     bd.executeNonQuery(query)
