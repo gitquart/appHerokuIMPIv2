@@ -59,10 +59,9 @@ if status==200:
             print('Restarting sequential NO FOUND counter to Zero')
             query="update thesis.cjf_control set noinfolimit=0 where id_control="+str(objControl.idControl)+"; "
             bd.executeNonQuery(query)
-            query='update thesis.cjf_control set page='+str(num)+' where id_control=10'
+            query='update thesis.cjf_control set page='+str(num+1)+' where id_control=10'
             bd.executeNonQuery(query)
-            for x in range(1,3):
-                browser.back()  
+            
         else:
             print('Zero rows in the search...bye bye')
             #Look and update nolimit count
