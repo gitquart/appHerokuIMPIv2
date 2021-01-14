@@ -24,14 +24,15 @@ if resultSet:
         folder=str(lsControl[0])+"/"+str(lsControl[1])+"/"+str(lsControl[2])+"/"
 #Example of folder : MX/a/2015/000162
 url="https://siga.impi.gob.mx/newSIGA/content/common/principal.jsf"
-response= requests.get(url)
-status= response.status_code
-if status==200:
-    #Wait some time
-    browser.get(url)
-    time.sleep(10)   
-    startTime=tool.getTime()
-    for num in range(page,limit_it):
+
+#Wait some time
+for num in range(page,limit_it):
+    response= requests.get(url)
+    status= response.status_code
+    if status==200:
+        browser.get(url)
+        time.sleep(10)   
+        startTime=tool.getTime()
         print('Starting in page:',str(num))
         folder=folder+str(num).zfill(6) 
         query='update thesis.cjf_control set page='+str(num)+' where id_control=10'
