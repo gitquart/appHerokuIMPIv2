@@ -35,8 +35,6 @@ if status==200:
     for num in range(page,limit_it):
         print('Starting in page:',str(num))
         folder=folder+str(num).zfill(6) 
-        query='update thesis.cjf_control set page='+str(num)+' where id_control=10'
-        bd.executeNonQuery(query)
         #Click on "Búsqueda Simple"
         btnBusqueda=tool.devuelveElemento('//*[@id="j_idt23"]/p[4]/a',browser)
         btnBusqueda.click()
@@ -61,10 +59,9 @@ if status==200:
             print('Restarting sequential NO FOUND counter to Zero')
             query="update thesis.cjf_control set noinfolimit=0 where id_control="+str(objControl.idControl)+"; "
             bd.executeNonQuery(query)
-            os.sys.exit(0)
-            for i in range(1,3):
-                browser.back()    
-                       
+            query='update thesis.cjf_control set page='+str(num+1)+' where id_control=10'
+            bd.executeNonQuery(query)
+            os.sys.exit(0)  
         else:
             print('Zero rows in the search...bye bye')
             #Look and update nolimit count
