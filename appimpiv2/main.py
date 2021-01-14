@@ -29,7 +29,7 @@ response= requests.get(url)
 status= response.status_code
 if status==200:
     browser.get(url)
-    time.sleep(10)   
+    time.sleep(5)   
     startTime=tool.getTime()
     #Wait some time
     for num in range(page,limit_it):
@@ -38,13 +38,13 @@ if status==200:
         #Click on "Búsqueda Simple"
         btnBusqueda=tool.devuelveElemento('//*[@id="j_idt23"]/p[4]/a',browser)
         btnBusqueda.click()
-        time.sleep(10)
+        time.sleep(5)
         txtBuscar=tool.devuelveElemento('//*[@id="busquedaSimpleForm:cadenaBusquedaText"]',browser)
         txtBuscar.send_keys(folder)
         time.sleep(10)
         btnBuscar=tool.devuelveElemento('//*[@id="busquedaSimpleForm:buscar"]',browser)
         btnBuscar.click()
-        time.sleep(10)
+        time.sleep(5)
         txtResultados=tool.devuelveElemento('//*[@id="busquedaSimpleForm:j_idt62"]',browser)
         chunks=txtResultados.text.split(':')
         res=int(chunks[1])
@@ -59,9 +59,10 @@ if status==200:
             print('Restarting sequential NO FOUND counter to Zero')
             query="update thesis.cjf_control set noinfolimit=0 where id_control="+str(objControl.idControl)+"; "
             bd.executeNonQuery(query)
-            query='update thesis.cjf_control set page='+str(num+1)+' where id_control=10'
+            query='update thesis.cjf_control set page='+str(num)+' where id_control=10'
             bd.executeNonQuery(query)
-            os.sys.exit(0)  
+            for x in range(1,3):
+                browser.back()  
         else:
             print('Zero rows in the search...bye bye')
             #Look and update nolimit count
