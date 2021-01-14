@@ -14,7 +14,9 @@ if resultSet:
     for row in resultSet:
         page=int(row[0])
 
+
 year=page
+print('Migrating year ',str(year))
 
 query='select id,actor,agent,branchreg,cip,class,cpc,cset,dateconcesion,dateoncirculation,dates,demanded,denomination,description,divisional,divisional_de,errorsolved,featuredate,folder,folioexit,gaceta,internatdatefeature,internatfoldernum,internatpubdate,internatpubnum,inventor,licenciatario,locarno,lsnewfields,main,maindata,noconcesion,officepatenttypedoc,oficiodate,oficionum,pc,priority,prodserv,reneweduntil,requester,resolution,sample,section,secuencia,summary,title,typedoc,url,year from thesis.impi_docs_master where year='+str(year)+' ALLOW FILTERING'
 #lsFields 28
