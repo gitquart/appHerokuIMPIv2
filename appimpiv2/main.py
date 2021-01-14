@@ -10,6 +10,18 @@ from InternalControl import cInternalControl
 objControl=cInternalControl()
 
 browser=tool.returnChromeSettings()
+resultSet=bd.returnQueryResult('select lscontrol,page,limit_iteration from thesis.cjf_control where id_control='+str(objControl.idControl)+' ;')
+lsControl=[]
+page=0
+limit_it=0
+endTime=0
+folder=''
+if resultSet:
+    for row in resultSet:
+        lsControl=row[0]
+        page=int(row[1])
+        limit_it=int(row[2])
+        folder=str(lsControl[0])+"/"+str(lsControl[1])+"/"+str(lsControl[2])+"/"
 #Example of folder : MX/a/2015/000162
 url="https://siga.impi.gob.mx/newSIGA/content/common/principal.jsf"
 response= requests.get(url)
@@ -19,19 +31,6 @@ if status==200:
     browser.get(url)
     time.sleep(10)   
     startTime=tool.getTime()
-    endTime=0
-    resultSet=bd.returnQueryResult('select lscontrol,page,limit_iteration from thesis.cjf_control where id_control='+str(objControl.idControl)+' ;')
-    lsControl=[]
-    page=0
-    limit_it=0
-    folder=''
-    if resultSet:
-        for row in resultSet:
-            lsControl=row[0]
-            page=int(row[1])
-            limit_it=int(row[2])
-            folder=str(lsControl[0])+"/"+str(lsControl[1])+"/"+str(lsControl[2])+"/"
-
     for num in range(page,limit_it):
         print('Starting in page:',str(num))
         folder=folder+str(num).zfill(6) 
