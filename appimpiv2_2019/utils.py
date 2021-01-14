@@ -17,7 +17,6 @@ from InternalControl import cInternalControl
 
 
 objControl=cInternalControl()
-
 download_dir=objControl.download_dir
 
 
@@ -232,13 +231,13 @@ def processCase(json_doc,gaceta,browser,row,numDetalles,folder,totalRows):
     checkField(row,numDetalles,browser,json_doc,folder)
     #Insert to DB
     rowSec=row+1
-    query="select id from thesis.impi_docs_master where folder='"+json_doc['folder']+"' and gaceta='"+json_doc['gaceta']+"' and sample='"+json_doc['sample']+"' and section='"+json_doc['section']+"' and secuencia="+str(json_doc['secuencia'])+" ALLOW FILTERING ;"
+    query="select id from thesis.impi_docs_masters where folder='"+json_doc['folder']+"' and gaceta='"+json_doc['gaceta']+"' and sample='"+json_doc['sample']+"' and section='"+json_doc['section']+"' and secuencia="+str(json_doc['secuencia'])+" ALLOW FILTERING ;"
     result=bd.returnQueryResult(query)   
     if result: 
         folder=json_doc['folder']
         print(Fore.GREEN,'Folder: ',folder, 'and Gaceta: ',gaceta, ' and Sequence: ',str(rowSec),' existed')
     else:
-        lsRes=bd.insertarJSON('thesis.impi_docs_master',json_doc)      
+        lsRes=bd.insertarJSON('thesis.impi_docs_masters',json_doc)      
         if lsRes[0]==True:
             print('Record added')
         
