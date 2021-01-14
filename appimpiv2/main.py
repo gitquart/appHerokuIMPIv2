@@ -61,6 +61,7 @@ if status==200:
             print('Restarting sequential NO FOUND counter to Zero')
             query="update thesis.cjf_control set noinfolimit=0 where id_control="+str(objControl.idControl)+"; "
             bd.executeNonQuery(query)
+            os.sys.exit(0)
             for i in range(1,3):
                 browser.back()    
                        
