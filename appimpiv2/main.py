@@ -25,14 +25,14 @@ if resultSet:
 #Example of folder : MX/a/2015/000162
 url="https://siga.impi.gob.mx/newSIGA/content/common/principal.jsf"
 
-#Wait some time
-for num in range(page,limit_it):
-    response= requests.get(url)
-    status= response.status_code
-    if status==200:
-        browser.get(url)
-        time.sleep(10)   
-        startTime=tool.getTime()
+response= requests.get(url)
+status= response.status_code
+if status==200:
+    browser.get(url)
+    time.sleep(10)   
+    startTime=tool.getTime()
+    #Wait some time
+    for num in range(page,limit_it):
         print('Starting in page:',str(num))
         folder=folder+str(num).zfill(6) 
         query='update thesis.cjf_control set page='+str(num)+' where id_control=10'
