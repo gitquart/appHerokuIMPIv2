@@ -1,7 +1,7 @@
 import os
 
 class cInternalControl:
-    idControl=10
+    idControl=12
     version='2020'
     timeout=70
     hfolder='appimpiv2_'+version 

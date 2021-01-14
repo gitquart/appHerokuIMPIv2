@@ -5,8 +5,17 @@ from InternalControl import cInternalControl
 import json
 import uuid
 
-year='2015'
 objControl=cInternalControl()
+
+
+resultSet=bd.returnQueryResult('select page from thesis.cjf_control where id_control='+str(objControl.idControl)+' ;')
+page=0
+if resultSet:
+    for row in resultSet:
+        page=int(row[0])
+
+year=page
+
 query='select id,actor,agent,branchreg,cip,class,cpc,cset,dateconcesion,dateoncirculation,dates,demanded,denomination,description,divisional,divisional_de,errorsolved,featuredate,folder,folioexit,gaceta,internatdatefeature,internatfoldernum,internatpubdate,internatpubnum,inventor,licenciatario,locarno,lsnewfields,main,maindata,noconcesion,officepatenttypedoc,oficiodate,oficionum,pc,priority,prodserv,reneweduntil,requester,resolution,sample,section,secuencia,summary,title,typedoc,url,year from thesis.impi_docs_master where year='+str(year)+' ALLOW FILTERING'
 #lsFields 28
 #secuencia 43
@@ -55,7 +64,8 @@ if lsResultSet:
 else:
     print('No records')  
 
-print('Done with year:',str(year))                  
+print('Done with year:',str(year)) 
+os.sys.exit(0)                 
               
     
 
