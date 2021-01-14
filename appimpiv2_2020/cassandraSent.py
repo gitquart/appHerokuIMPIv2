@@ -59,6 +59,42 @@ def executeNonQuery(querySt):
     future = session.execute_async(querySt)
     future.result()
     cluster.shutdown()
+
+def getLargeQuery(query):
+    cluster = getCluster()
+    session = cluster.connect()
+    session.default_timeout=70     
+    statement = SimpleStatement(query, fetch_size=1000)
+    lsResultSet=[]
+    for row in session.execute(statement):
+        lsResultSet.append(row)
+                
+    cluster.shutdown()
+    return lsResultSet
+
+def getShortQuery(query):
+    res=''
+    cluster=getCluster()
+    session = cluster.connect()
+    session.default_timeout=70
+    #Check wheter or not the record exists      
+    future = session.execute_async(query)
+    res=future.result()
+    cluster.shutdown()
+
+    return res 
+
+def getFieldsFromTable(keyspace,table):
+    query="select column_name from system_schema.columns WHERE keyspace_name = '"+keyspace+"' AND table_name = '"+table+"';"
+    columns_list=''
+    columns_list=getShortQuery(query)
+    lsFields=[]
+    for col in columns_list:
+        lsFields.append(col[0])
+
+    fieldsForQuery=','.join(lsFields) 
+
+    return fieldsForQuery             
     
 
 
