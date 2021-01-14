@@ -61,6 +61,8 @@ if status==200:
             bd.executeNonQuery(query)
             query='update thesis.cjf_control set page='+str(num+1)+' where id_control=10'
             bd.executeNonQuery(query)
+            print('Next...')
+            os.sys.exit(0)
             
         else:
             print('Zero rows in the search...bye bye')
