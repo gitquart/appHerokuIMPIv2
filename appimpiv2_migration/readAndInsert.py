@@ -72,7 +72,7 @@ for year in lsYears:
         print('No records')  
 
     print('Done with year:',str(year)) 
-    os.sys.exit(0)                 
+                 
               
     
 
