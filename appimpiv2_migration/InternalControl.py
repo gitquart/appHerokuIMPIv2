@@ -5,7 +5,7 @@ class cInternalControl:
     version='migration'
     timeout=70
     hfolder='appimpiv2_'+version 
-    heroku=True
+    heroku=False
     rutaHeroku='/app/'+hfolder
     rutaLocal=os.getcwd()+'\\'+hfolder+'\\'
     download_dir='Download_'+hfolder
