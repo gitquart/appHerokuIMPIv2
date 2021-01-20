@@ -1,1 +1,1 @@
-worker: python3 /app/appimpiv2_2020/readAndInsert.py
+worker: python3 /app/appimpiv2_2020/main.py
