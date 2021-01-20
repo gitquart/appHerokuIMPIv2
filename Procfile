@@ -1,1 +1,1 @@
-worker: python3 /app/appimpiv2_migration/readAndInsert.py
+worker: python3 /app/appimpiv2_2019/readAndInsert.py

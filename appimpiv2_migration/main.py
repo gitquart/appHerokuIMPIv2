@@ -65,7 +65,9 @@ if status==200:
             os.sys.exit(0)
             
         else:
-            print('Zero rows in the search...bye bye')
+            print('Zero rows in the search...updating page number')
+            query='update thesis.cjf_control set page='+str(num+1)+' where id_control='+str(objControl.idControl)+' '
+            bd.executeNonQuery(query)
             #Look and update nolimit count
             query="select noinfolimit from thesis.cjf_control where id_control="+str(objControl.idControl)+"  ALLOW FILTERING"
             resultSet=bd.returnQueryResult(query)
