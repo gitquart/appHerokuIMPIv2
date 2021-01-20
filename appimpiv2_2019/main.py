@@ -88,7 +88,7 @@ if status==200:
             print('-----------------------------------------') 
             print('Hey, 30 mins done! Turn me back on!') 
             print('-----------------------------------------') 
-            os.sys.exit(0)  
+        os.sys.exit(0)      
               
                
             
