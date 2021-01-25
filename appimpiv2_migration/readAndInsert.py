@@ -19,10 +19,12 @@ if resultSet:
 year=page
 """
 
+oldTable='thesis.impi_docs_masters'
+newTable='thesis.impi_docs_master'
 
 for year in lsYears:
     print('Migrating year ',str(year))
-    query='select id,actor,agent,branchreg,cip,class,cpc,cset,dateconcesion,dateoncirculation,dates,demanded,denomination,description,divisional,divisional_de,errorsolved,featuredate,folder,folioexit,gaceta,internatdatefeature,internatfoldernum,internatpubdate,internatpubnum,inventor,licenciatario,locarno,lsnewfields,main,maindata,noconcesion,officepatenttypedoc,oficiodate,oficionum,pc,priority,prodserv,reneweduntil,requester,resolution,sample,section,secuencia,summary,title,typedoc,url,year from thesis.impi_docs_master where year='+str(year)+' ALLOW FILTERING'
+    query='select id,actor,agent,branchreg,cip,class,cpc,cset,dateconcesion,dateoncirculation,dates,demanded,denomination,description,divisional,divisional_de,errorsolved,featuredate,folder,folioexit,gaceta,internatdatefeature,internatfoldernum,internatpubdate,internatpubnum,inventor,licenciatario,locarno,lsnewfields,main,maindata,noconcesion,officepatenttypedoc,oficiodate,oficionum,pc,priority,prodserv,reneweduntil,requester,resolution,sample,section,secuencia,summary,title,typedoc,url,year from '+oldTable+' where year='+str(year)+' ALLOW FILTERING'
     #lsFields 28
     #secuencia 43
     #year 48
@@ -48,24 +50,24 @@ for year in lsYears:
                     json_doc[lsField[colCount]]=str(col)
                 colCount+=1
 
-            #Save info
-            query="select id from thesis.impi_docs_masters where folder='"+json_doc['folder']+"' and gaceta='"+json_doc['gaceta']+"' and sample='"+json_doc['sample']+"' and section='"+json_doc['section']+"' and secuencia="+str(json_doc['secuencia'])+" ALLOW FILTERING ;"
+            #Save info: Heres starts the parte with the NEW TABLE
+            query="select id from "+newTable+" where folder='"+json_doc['folder']+"' and gaceta='"+json_doc['gaceta']+"' and sample='"+json_doc['sample']+"' and section='"+json_doc['section']+"' and secuencia="+str(json_doc['secuencia'])+" ALLOW FILTERING ;"
             result=bd.returnQueryResult(query)   
             if result: 
                 folder=json_doc['folder']
                 gaceta=json_doc['gaceta']
                 secuencia=str(json_doc['secuencia'])
                 print('Folder: ',folder, 'and Gaceta: ',gaceta, ' and Sequence: ',secuencia,' existed')
-                query='delete from thesis.impi_docs_master where id='+json_doc['id']+' '
+                query='delete from '+oldTable+' where id='+json_doc['id']+' '
                 bd.executeNonQuery(query)
                 print('Deleted...')
             else:
                 old_id=json_doc['id']
                 json_doc['id']=str(uuid.uuid4())
-                lsRes=bd.insertarJSON('thesis.impi_docs_masters',json_doc)      
+                lsRes=bd.insertarJSON(newTable,json_doc)      
                 if lsRes[0]==True:
                     print('Record added')
-                    query='delete from thesis.impi_docs_master where id='+old_id+' '
+                    query='delete from '+oldTable+' where id='+old_id+' '
                     bd.executeNonQuery(query)
                     print('Deleted...')
     else:

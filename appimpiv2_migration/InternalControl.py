@@ -2,7 +2,7 @@ import os
 
 class cInternalControl:
     idControl=11
-    version='2019'
+    version='migration'
     timeout=70
     hfolder='appimpiv2_'+version 
     heroku=True
