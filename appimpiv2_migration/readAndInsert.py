@@ -7,7 +7,7 @@ import uuid
 
 objControl=cInternalControl()
 
-lsYears=['2016','2017','2018','2019','2020']
+lsYears=['2015','2016','2017','2018','2019','2020']
 """
 resultSet=bd.returnQueryResult('select page from thesis.cjf_control where id_control='+str(objControl.idControl)+' ;')
 page=0
