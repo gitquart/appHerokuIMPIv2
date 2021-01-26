@@ -108,7 +108,7 @@ def checkField(row,numDetalles,browser,json_doc,folder):
         valField=valField.replace("'"," ")
         
         if lblField in lsWebField:
-            if lblField=='Oficina, No de Patente y Tipo de documento' :
+            if lblField=='Oficina, No de Patente y Tipo de documento':
                 json_doc['officePatentTypeDoc']=valField
                 continue
             if lblField=='Tipo de documento':
