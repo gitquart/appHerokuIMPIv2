@@ -16,10 +16,19 @@ def getCluster():
     #Connect to Cassandra
     objCC=CassandraConnection()
     cloud_config=''
+    zip_file='secure-connect-dbquart_serverless.zip'
     if objControl.heroku:
-        cloud_config= {'secure_connect_bundle': objControl.rutaHeroku+'/secure-connect-dbquart.zip'}
+        cloud_config= {'secure_connect_bundle': objControl.rutaHeroku+'/'+zip_file,
+                       'init-query-timeout': 10,
+                       'connect_timeout': 10,
+                       'set-keyspace-timeout': 10
+        }
     else:
-        cloud_config= {'secure_connect_bundle': objControl.rutaLocal+'secure-connect-dbquart.zip'}
+        cloud_config= {'secure_connect_bundle': objControl.rutaLocal+zip_file,
+                       'init-query-timeout': 10,
+                       'connect_timeout': 10,
+                       'set-keyspace-timeout': 10
+        }
 
 
     auth_provider = PlainTextAuthProvider(objCC.cc_user,objCC.cc_pwd)
@@ -103,8 +112,8 @@ def getFieldsFromTable(keyspace,table):
 
    
 class CassandraConnection():
-    cc_user='quartadmin'
+    cc_user='psXzplCMoTnTjWLSeAblXSkr'
     cc_keyspace='thesis'
-    cc_pwd='P@ssw0rd33'
+    cc_pwd='_vGwtwEUsOxj9ZuSbm6SOJhyQOsU-s9QEzX7ZWZcRYKeew9sOqPeFmKr-pDzsIoisiF8aInS1HjSs7_fqZ9EZaMS96TNCwn_yReyjZvHuys+_fGSBuHKZz_+NTj6Z6L0'
         
 
