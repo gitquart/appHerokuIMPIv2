@@ -1,1 +1,1 @@
-worker: python3 /app/appimpiv2_2020a/main.py
+worker: python3 /app/appimpiv2_2020b/main.py
