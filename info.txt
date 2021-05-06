@@ -23,3 +23,6 @@ heroku/python
 https://github.com/heroku/heroku-buildpack-google-chrome
 https://github.com/heroku/heroku-buildpack-chromedriver
 
+
+How to rename the folders for heroku when having like A,B...
+-appimpiv2_2020A, ...2020B, ...2020C
