@@ -15,22 +15,18 @@ lsRes=[]
 def getCluster():
     #Connect to Cassandra
     objCC=CassandraConnection()
-    cloud_config=''
+    cloud_config={}
     zip_file='secure-connect-dbquart_serverless.zip'
+    cloud_config['init-query-timeout']=10
+    cloud_config['connect_timeout']=10
+    cloud_config['set-keyspace-timeout']=10
+    secure_bundle=''
     if objControl.heroku:
-        cloud_config= {'secure_connect_bundle': objControl.rutaHeroku+'/'+zip_file,
-                       'init-query-timeout': 10,
-                       'connect_timeout': 10,
-                       'set-keyspace-timeout': 10
-        }
+        secure_bundle= objControl.rutaHeroku+'/'+zip_file
     else:
-        cloud_config= {'secure_connect_bundle': objControl.rutaLocal+zip_file,
-                       'init-query-timeout': 10,
-                       'connect_timeout': 10,
-                       'set-keyspace-timeout': 10
-        }
+        secure_bundle: objControl.rutaLocal+zip_file
 
-
+    cloud_config['secure_connect_bundle'] =secure_bundle   
     auth_provider = PlainTextAuthProvider(objCC.cc_user,objCC.cc_pwd)
     cluster = Cluster(cloud=cloud_config, auth_provider=auth_provider) 
 
