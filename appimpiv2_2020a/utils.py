@@ -415,14 +415,15 @@ def initialDownloadDirCheck():
         print('Download folder empty...')   
 
 def devuelveElemento(xPath, browser):
-    startTime=getTime()
+    startTimeC=0
+    startTimeC=getTime()
     cEle=0
     while (cEle==0):
         cEle=len(browser.find_elements_by_xpath(xPath))
         if cEle>0:
             ele=browser.find_elements_by_xpath(xPath)[0]
-        endTime=getTime()    
-        minutes=getDifferenceInMinutes(startTime,endTime)
+        endTimeC=getTime()    
+        minutes=getDifferenceInMinutes(startTimeC,endTimeC)
         if minutes>=5:
             print('Some control in the page is not responding---Check the page')
     return ele 
