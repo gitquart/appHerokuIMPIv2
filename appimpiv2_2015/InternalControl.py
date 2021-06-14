@@ -1,8 +1,8 @@
 import os
 
 class cInternalControl:
-    idControl=7
-    version='2018'
+    idControl=6
+    version='2015'
     timeout=70
     hfolder='appimpiv2_'+version 
     heroku=True
