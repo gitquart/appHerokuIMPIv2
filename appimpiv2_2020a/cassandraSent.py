@@ -24,7 +24,7 @@ def getCluster():
     if objControl.heroku:
         secure_bundle= objControl.rutaHeroku+'/'+zip_file
     else:
-        secure_bundle: objControl.rutaLocal+zip_file
+        secure_bundle= objControl.rutaLocal+zip_file
 
     cloud_config['secure_connect_bundle'] =secure_bundle   
     auth_provider = PlainTextAuthProvider(objCC.cc_user,objCC.cc_pwd)
