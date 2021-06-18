@@ -425,7 +425,8 @@ def devuelveElemento(xPath, browser):
         endTimeC=getTime()    
         minutes=getDifferenceInMinutes(startTimeC,endTimeC)
         if minutes>=5:
-            print('Some control in the page is not responding---Check the page')
+            print('Some control in the page is not responding---Check the page...Ending program')
+            os.sys.exit(0)
     return ele 
 
 def getTime():
